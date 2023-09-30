@@ -25,9 +25,6 @@
 
     --font-size: 18px;
     --todo-container-width:400px;
-
-    /* font-family: 'Pangolin', cursive; */
-    /* font-family: 'Freehand', cursive; */
 }
 
 .light-theme {
@@ -68,7 +65,7 @@ header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: var(--todo-container-width);
+    width: min(var(--todo-container-width),90%);
     font-family: 'Josefin Sans', sans-serif;
     margin-top: 5rem;
 }
@@ -89,7 +86,7 @@ header .theme-icon {
 }
 
 .todo-body {
-    width: var(--todo-container-width);
+    width: min(var(--todo-container-width),90%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -107,7 +104,7 @@ header .theme-icon {
     padding: 15px 50px;
     font-weight: 400;
     width: 100%;
-    border-radius: 3px;
+    border-radius: 5px;
     color: var(--text-todo-not-completed);
     font-family: 'Pangolin', cursive;
     font-size: var(--font-size);
@@ -130,7 +127,7 @@ header .theme-icon {
 .todo-body .todo-display {
     display: flex;
     flex-direction: column;
-    width: var(--todo-container-width);
+    width: 100%;
     margin-block: 1.5rem 0rem;
     background-color: var(--container-background);
     border-radius: 3px 3px 0px 0px;
@@ -206,12 +203,13 @@ header .theme-icon {
     justify-content: space-between;
     background: var(--container-background);
     border-radius: 0px 0px 3px 3px;
-    width: var(--todo-container-width);
+    width: 100%;
     font-size: 12px;
-    padding: 15px;
+    padding: 20px;
     color: var(--text-todo-not-completed);
     letter-spacing: 1px;
     font-weight: 700;
+    position: relative;
 }
 
 .todo-controller .todo-status-buttons {
@@ -251,4 +249,24 @@ footer {
 
 .attribution a {
     color: hsl(228, 45%, 44%);
+}
+
+
+@media (max-width:520px) {
+    body {
+        background-image: var(--bg-image-mobile);
+    }
+
+    .todo-controller .todo-status-buttons {
+        position: absolute;
+        top:5rem;
+        left: 0;
+        background-color: inherit;
+        padding: 1rem 5rem;
+        width: 100%;
+    }
+
+    .note {
+        margin-top: 4rem
+    }
 }
