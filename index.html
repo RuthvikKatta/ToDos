@@ -14,26 +14,25 @@
 	<script src="./script.js" defer></script>
 </head>
 
-<body class="light-theme">
+<body>
 
 	<header>
 		<h1 class="logo">
 			TODO
 		</h1>
 		<div class="theme-icon">
-			<!-- <img src="./images/icon-moon.svg" alt="moon-icon"> -->
 		</div>
 	</header>
 
 	<main class="todo-body">
 		<form action="submit" method="POST">
 			<div class="dummy-check-circle"></div>
-			<input type="text" name="todo-input" id="todo-input" placeholder="Create a new todo...">
+			<input type="text" name="todo-input" id="todo-input" placeholder="Create a new todo..." required>
 		</form>
 
 		<section class="todo-display">
 
-			<!-- <div class="todo">
+			<!-- <div class="todo" draggable="true" id=${id + "_root"}>
                 <div class="todo-details">
                     <label for="${id}">
                         <img class="check-icon" src="./images/icon-check.svg" alt="check-icon">
@@ -48,7 +47,7 @@
 
 		<section class="todo-controller">
 			<div class="items-left">
-				<p><span class="todo-left-counter">1</span> items left</p>
+				<p><span class="todo-left-counter">0</span> items left</p>
 			</div>
 
 			<ul class="todo-status-buttons">
