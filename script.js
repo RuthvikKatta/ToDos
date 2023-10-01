@@ -33,13 +33,13 @@ toDoForm.addEventListener('submit', (e) => {
         isCompleted: false
     }
 
-    allToDosList.push(toDo);
+    allToDosList.splice(0, 0, toDo);
     toDoForm.reset();
 
-    generateToDos(allToDosList);
+    generateToDos(allToDosList, true);
 })
 
-const generateToDos = (toDosList) => {
+const generateToDos = (toDosList, isDraggable) => {
     if (toDosList == null) {
         return
     }
@@ -52,7 +52,7 @@ const generateToDos = (toDosList) => {
         var isChecked = toDo.isCompleted ? "checked" : "";
 
         toDosString += `
-            <div class="todo" draggable="true" id=${id + "_root"}>
+            <div class="todo" draggable="${isDraggable}" id=${id + "_root"}>
                 <div class="todo-details">
                     <label for="${id}">
                         <img class="check-icon" src="./images/icon-check.svg" alt="check-icon">
@@ -85,7 +85,8 @@ const generateToDos = (toDosList) => {
         });
     }
 
-    toDos.forEach((currTodo, index) => {
+    toDos.forEach((currTodo) => {
+
         currTodo.addEventListener('drag', (e) => {
 
             var prevTodo = currTodo.previousElementSibling;
@@ -98,7 +99,6 @@ const generateToDos = (toDosList) => {
 
                 if (mousePointerY >= nextTodoY && mousePointerY != 0) {
                     toDoDisplay.insertBefore(currTodo, nextTodo.nextElementSibling);
-                    swapElements(allToDosList, index, index + 1);
                 }
             }
 
@@ -108,24 +108,38 @@ const generateToDos = (toDosList) => {
 
                 if (mousePointerY - 50 <= prevTodoY && mousePointerY != 0) {
                     toDoDisplay.insertBefore(currTodo, prevTodo);
-                    swapElements(allToDosList, index - 1, index);
                 }
             }
+        })
+
+        currTodo.addEventListener('dragend', () => {
+            updateToDosOrder();
+            currTodo.classList.remove('custom-grabbing-cursor');
         })
     })
 }
 
-const swapElements = (allToDosList, index1, index2) => {
-    const temp = allToDosList[index1];
-    allToDosList[index1] = allToDosList[index2];
-    allToDosList[index2] = temp;
+const updateToDosOrder = () => {
+    const toDos = document.getElementsByName('todo-status');
 
-    generateToDos(allToDosList);
-};
+    allToDosList = [];
+
+    toDos.forEach((todo) => {
+        let newToDo = {
+            id: parseInt(todo.id),
+            title: todo.nextElementSibling.innerText,
+            isCompleted: todo.checked
+        };
+
+        allToDosList.push(newToDo);
+    })
+
+    generateToDos(allToDosList, true)
+}
 
 const deleteTodo = (toDoId) => {
     allToDosList = allToDosList.filter((toDo) => toDo.id !== toDoId);
-    generateToDos(allToDosList);
+    generateToDos(allToDosList, true);
 };
 
 const updateToDoCount = () => {
@@ -146,27 +160,27 @@ const updateToDoCount = () => {
     toDosCountElement.textContent = itemsLeft;
 };
 
-generateToDos(allToDosList);
+generateToDos(allToDosList, true);
 
 allToDos.addEventListener('click', () => {
     allToDos.classList.add('selected');
     activeToDos.classList.remove('selected');
     completedToDos.classList.remove('selected');
-    generateToDos(allToDosList);
+    generateToDos(allToDosList, true);
 });
 
 activeToDos.addEventListener('click', () => {
     allToDos.classList.remove('selected');
     activeToDos.classList.add('selected');
     completedToDos.classList.remove('selected');
-    generateToDos(activeToDosList);
+    generateToDos(activeToDosList, false);
 });
 
 completedToDos.addEventListener('click', () => {
     allToDos.classList.remove('selected');
     activeToDos.classList.remove('selected');
     completedToDos.classList.add('selected');
-    generateToDos(completedToDosList);
+    generateToDos(completedToDosList, false);
 });
 
 clearCompleted.addEventListener('click', () => {
