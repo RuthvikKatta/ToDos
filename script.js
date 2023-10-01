@@ -117,6 +117,42 @@ const generateToDos = (toDosList, isDraggable) => {
             currTodo.classList.remove('custom-grabbing-cursor');
         })
     })
+
+    toDos.forEach((currTodo) => {
+    
+        currTodo.addEventListener('touchmove', (e) => {
+    
+            var prevTodo = currTodo.previousElementSibling;
+            var nextTodo = currTodo.nextElementSibling;
+            var touchMoveY = e.touches[0].pageY;
+    
+            // move down
+            if (null != nextTodo) {
+                var nextTodoY = nextTodo.getBoundingClientRect().y;
+    
+                if (touchMoveY >= nextTodoY && touchMoveY != 0) {
+                    toDoDisplay.insertBefore(currTodo, nextTodo.nextElementSibling);
+                }
+            }
+    
+            // move up
+            if (null != prevTodo) {
+                var prevTodoY = prevTodo.getBoundingClientRect().y;
+    
+                if (touchMoveY - 50 <= prevTodoY && touchMoveY != 0) {
+                    toDoDisplay.insertBefore(currTodo, prevTodo);
+                }
+            }
+        });
+    
+        // Touch end event
+        currTodo.addEventListener('touchend', () => {
+            isDragging = false;
+            updateToDosOrder();
+            currTodo.classList.remove('custom-grabbing-cursor');
+        });
+    });
+    
 }
 
 const updateToDosOrder = () => {
